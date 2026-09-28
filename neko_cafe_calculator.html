@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NEKO CAFE | Price Calculator</title>
+<style>
+  :root{--bg:#171717;--panel:#22211f;--panel2:#2b2926;--cream:#eadfcf;--muted:#a99f92;--accent:#c8a97e;--line:#3b3833;--white:#fffaf3;--danger:#b96a62}
+  *{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2a2824 0,#171717 46%,#101010 100%);color:var(--white);font-family:Inter,"Noto Sans JP",system-ui,-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;padding:24px}
+  .app{width:min(920px,100%)}
+  .brand{text-align:center;margin-bottom:22px}.cat{font-size:32px;letter-spacing:6px;color:var(--accent)}.brand h1{font-size:25px;letter-spacing:.18em;margin:7px 0 3px;font-weight:700}.brand p{margin:0;color:var(--muted);font-size:12px;letter-spacing:.22em}
+  .register{background:rgba(34,33,31,.96);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 24px 70px rgba(0,0,0,.35)}
+  .products{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .product{background:var(--panel2);border:1px solid var(--line);border-radius:18px;padding:20px;transition:.2s}.product:hover{border-color:#655b4e;transform:translateY(-1px)}
+  .badge{display:inline-flex;border:1px solid #655b4e;color:var(--cream);border-radius:999px;padding:5px 10px;font-size:11px;letter-spacing:.08em}.product h2{font-size:20px;margin:14px 0 5px}.price{color:var(--accent);font-size:25px;font-weight:800;margin-bottom:18px}
+  .qty{display:grid;grid-template-columns:48px 1fr 48px;gap:8px;align-items:center}.qty button{height:46px;border:0;border-radius:12px;background:#3a3732;color:var(--white);font-size:25px;cursor:pointer}.qty button:hover{background:#49453f}.qty input{height:46px;width:100%;border:1px solid var(--line);border-radius:12px;background:#181817;color:var(--white);text-align:center;font-size:18px;font-weight:700;outline:none}
+  .subtotal{margin-top:14px;color:var(--muted);font-size:13px;text-align:right}.subtotal strong{color:var(--cream);font-size:17px;margin-left:6px}
+  .receipt{margin-top:18px;border-top:1px dashed #554f47;padding-top:20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end}.summary{color:var(--muted);font-size:13px}.summary span{color:var(--cream);font-weight:700}.total{text-align:right}.total small{display:block;color:var(--muted);letter-spacing:.15em;margin-bottom:4px}.total strong{font-size:38px;color:var(--cream);letter-spacing:.02em}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.actions button{border-radius:13px;height:48px;font-weight:700;letter-spacing:.06em;cursor:pointer}.reset{background:transparent;border:1px solid #66524e;color:#dba69f}.copy{border:0;background:var(--accent);color:#1b1814}.copy:hover{filter:brightness(1.06)}
+  .toast{height:22px;text-align:center;color:var(--accent);font-size:12px;margin-top:10px}.footer{text-align:center;color:#716b63;font-size:10px;letter-spacing:.18em;margin-top:14px}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.pad button{height:52px;border:1px solid var(--line);border-radius:12px;background:#33302c;color:var(--white);font-size:21px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .12s,transform .08s}.pad button:hover{background:#413d37}.pad button:active{transform:scale(.95);background:#565048}.pad .fn{background:#26241f;color:var(--muted);font-size:17px}.pad .clr{color:#dba69f}
+  .qty input{cursor:default}.qty input:focus,.pad button:focus-visible,.qty button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  @media(max-width:640px){body{padding:14px;align-items:flex-start}.register{padding:16px;border-radius:19px}.products{grid-template-columns:1fr}.brand{margin:14px 0 18px}.total strong{font-size:31px}.receipt{grid-template-columns:1fr}.total{text-align:left}.actions{grid-template-columns:1fr}.product{padding:17px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="brand">
+    <div class="cat">ฅ ᐢ. ̫ .ᐢ ฅ</div>
+    <h1>NEKO CAFE</h1>
+    <p>PRICE CALCULATOR</p>
+  </header>
+
+  <section class="register">
+    <div class="products">
+      <article class="product">
+        <span class="badge">25% RECOVERY</span>
+        <h2>25%回復の商品</h2>
+        <div class="price">$30,000</div>
+        <div class="qty">
+          <button type="button" onclick="changeQty('q25',-1)">−</button>
+          <input id="q25" type="number" min="0" step="1" value="0" inputmode="none" oninput="calculate()" />
+          <button type="button" onclick="changeQty('q25',1)">＋</button>
+        </div>
+        <div class="pad">
+          <button type="button" onclick="pressKey('q25','7')">7</button>
+          <button type="button" onclick="pressKey('q25','8')">8</button>
+          <button type="button" onclick="pressKey('q25','9')">9</button>
+          <button type="button" onclick="pressKey('q25','4')">4</button>
+          <button type="button" onclick="pressKey('q25','5')">5</button>
+          <button type="button" onclick="pressKey('q25','6')">6</button>
+          <button type="button" onclick="pressKey('q25','1')">1</button>
+          <button type="button" onclick="pressKey('q25','2')">2</button>
+          <button type="button" onclick="pressKey('q25','3')">3</button>
+          <button type="button" class="fn clr" onclick="pressKey('q25','C')">C</button>
+          <button type="button" onclick="pressKey('q25','0')">0</button>
+          <button type="button" class="fn" onclick="pressKey('q25','B')" aria-label="1文字削除">⌫</button>
+        </div>
+        <div class="subtotal">小計 <strong id="s25">$0</strong></div>
+      </article>
+
+      <article class="product">
+        <span class="badge">20% RECOVERY</span>
+        <h2>20%回復の商品</h2>
+        <div class="price">$60,000</div>
+        <div class="qty">
+          <button type="button" onclick="changeQty('q20',-1)">−</button>
+          <input id="q20" type="number" min="0" step="1" value="0" inputmode="none" oninput="calculate()" />
+          <button type="button" onclick="changeQty('q20',1)">＋</button>
+        </div>
+        <div class="pad">
+          <button type="button" onclick="pressKey('q20','7')">7</button>
+          <button type="button" onclick="pressKey('q20','8')">8</button>
+          <button type="button" onclick="pressKey('q20','9')">9</button>
+          <button type="button" onclick="pressKey('q20','4')">4</button>
+          <button type="button" onclick="pressKey('q20','5')">5</button>
+          <button type="button" onclick="pressKey('q20','6')">6</button>
+          <button type="button" onclick="pressKey('q20','1')">1</button>
+          <button type="button" onclick="pressKey('q20','2')">2</button>
+          <button type="button" onclick="pressKey('q20','3')">3</button>
+          <button type="button" class="fn clr" onclick="pressKey('q20','C')">C</button>
+          <button type="button" onclick="pressKey('q20','0')">0</button>
+          <button type="button" class="fn" onclick="pressKey('q20','B')" aria-label="1文字削除">⌫</button>
+        </div>
+        <div class="subtotal">小計 <strong id="s20">$0</strong></div>
+      </article>
+    </div>
+
+    <div class="receipt">
+      <div class="summary">商品数 <span id="count">0</span> 点</div>
+      <div class="total"><small>TOTAL</small><strong id="total">$0</strong></div>
+    </div>
+
+    <div class="actions">
+      <button class="reset" type="button" onclick="resetAll()">RESET</button>
+      <button class="copy" type="button" onclick="copyTotal()">合計金額をコピー</button>
+    </div>
+    <div id="toast" class="toast"></div>
+  </section>
+  <div class="footer">NEKO CAFE · FIVE M REGISTER</div>
+</main>
+<script>
+const fmt = n => '$' + n.toLocaleString('en-US');
+function val(id){ const el=document.getElementById(id); let n=parseInt(el.value,10); if(!Number.isFinite(n)||n<0)n=0; el.value=n; return n; }
+function calculate(){ const q25=val('q25'),q20=val('q20'); const s25=q25*30000,s20=q20*60000; document.getElementById('s25').textContent=fmt(s25); document.getElementById('s20').textContent=fmt(s20); document.getElementById('count').textContent=q25+q20; document.getElementById('total').textContent=fmt(s25+s20); }
+function changeQty(id,d){ const el=document.getElementById(id); el.value=Math.max(0,(parseInt(el.value,10)||0)+d); calculate(); }
+function pressKey(id,k){ const el=document.getElementById(id); let v=String(parseInt(el.value,10)||0); if(k==='C')v='0'; else if(k==='B')v=v.length>1?v.slice(0,-1):'0'; else if(v.length<4)v=(v==='0'?'':v)+k; el.value=v; calculate(); }
+function resetAll(){ document.getElementById('q25').value=0; document.getElementById('q20').value=0; document.getElementById('toast').textContent=''; calculate(); }
+async function copyTotal(){ const t=document.getElementById('total').textContent; try{ await navigator.clipboard.writeText(t); document.getElementById('toast').textContent='合計金額 '+t+' をコピーしました'; }catch(e){ document.getElementById('toast').textContent='コピーできませんでした'; } setTimeout(()=>document.getElementById('toast').textContent='',1800); }
+calculate();
+</script>
+</body>
+</html>
