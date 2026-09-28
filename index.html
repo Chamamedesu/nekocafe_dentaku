@@ -16,11 +16,12 @@
   .qty{display:grid;grid-template-columns:48px 1fr 48px;gap:8px;align-items:center}.qty button{height:46px;border:0;border-radius:12px;background:#3a3732;color:var(--white);font-size:25px;cursor:pointer}.qty button:hover{background:#49453f}.qty input{height:46px;width:100%;border:1px solid var(--line);border-radius:12px;background:#181817;color:var(--white);text-align:center;font-size:18px;font-weight:700;outline:none}
   .subtotal{margin-top:14px;color:var(--muted);font-size:13px;text-align:right}.subtotal strong{color:var(--cream);font-size:17px;margin-left:6px}
   .receipt{margin-top:18px;border-top:1px dashed #554f47;padding-top:20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end}.summary{color:var(--muted);font-size:13px}.summary span{color:var(--cream);font-weight:700}.total{text-align:right}.total small{display:block;color:var(--muted);letter-spacing:.15em;margin-bottom:4px}.total strong{font-size:38px;color:var(--cream);letter-spacing:.02em}
-  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.actions button{border-radius:13px;height:48px;font-weight:700;letter-spacing:.06em;cursor:pointer}.reset{background:transparent;border:1px solid #66524e;color:#dba69f}.copy{border:0;background:var(--accent);color:#1b1814}.copy:hover{filter:brightness(1.06)}
+  .actions{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:10px;margin-top:18px}.actions button{border-radius:13px;height:48px;font-weight:700;letter-spacing:.06em;cursor:pointer}.reset{background:transparent;border:1px solid #66524e;color:#dba69f}.copy{border:0;background:var(--accent);color:#1b1814}.copy:hover{filter:brightness(1.06)}.copy.plain{background:transparent;border:1px solid var(--accent);color:var(--accent)}.copy.plain:hover{background:rgba(200,169,126,.14);filter:none}
   .toast{height:22px;text-align:center;color:var(--accent);font-size:12px;margin-top:10px}.footer{text-align:center;color:#716b63;font-size:10px;letter-spacing:.18em;margin-top:14px}
   .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.pad button{height:52px;border:1px solid var(--line);border-radius:12px;background:#33302c;color:var(--white);font-size:21px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .12s,transform .08s}.pad button:hover{background:#413d37}.pad button:active{transform:scale(.95);background:#565048}.pad .fn{background:#26241f;color:var(--muted);font-size:17px}.pad .clr{color:#dba69f}
+  .quick-label{margin-top:14px;color:var(--accent);font-size:12px;letter-spacing:.06em}.quick{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px}.quick button{height:46px;border:1px solid var(--accent);border-radius:12px;background:rgba(200,169,126,.14);color:var(--cream);font-size:17px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .12s,transform .08s}.quick button:hover{background:rgba(200,169,126,.28)}.quick button:active{transform:scale(.95)}.quick button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
   .qty input{cursor:default}.qty input:focus,.pad button:focus-visible,.qty button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-  @media(max-width:640px){body{padding:14px;align-items:flex-start}.register{padding:16px;border-radius:19px}.products{grid-template-columns:1fr}.brand{margin:14px 0 18px}.total strong{font-size:31px}.receipt{grid-template-columns:1fr}.total{text-align:left}.actions{grid-template-columns:1fr}.product{padding:17px}}
+  @media(max-width:640px){body{padding:14px;align-items:flex-start}.register{padding:16px;border-radius:19px}.products{grid-template-columns:1fr}.brand{margin:14px 0 18px}.total strong{font-size:31px}.receipt{grid-template-columns:1fr}.total{text-align:left}.actions{grid-template-columns:1fr 1fr}.actions .copy:last-child{grid-column:1/-1}.product{padding:17px}}
 </style>
 </head>
 <body>
@@ -41,6 +42,14 @@
           <button type="button" onclick="changeQty('q25',-1)">−</button>
           <input id="q25" type="number" min="0" step="1" value="0" inputmode="none" oninput="calculate()" />
           <button type="button" onclick="changeQty('q25',1)">＋</button>
+        </div>
+        <div class="quick-label">タップするだけで個数をセット</div>
+        <div class="quick">
+          <button type="button" onclick="setQty('q25',10)">10</button>
+          <button type="button" onclick="setQty('q25',20)">20</button>
+          <button type="button" onclick="setQty('q25',30)">30</button>
+          <button type="button" onclick="setQty('q25',50)">50</button>
+          <button type="button" onclick="setQty('q25',100)">100</button>
         </div>
         <div class="pad">
           <button type="button" onclick="pressKey('q25','7')">7</button>
@@ -68,6 +77,14 @@
           <input id="q20" type="number" min="0" step="1" value="0" inputmode="none" oninput="calculate()" />
           <button type="button" onclick="changeQty('q20',1)">＋</button>
         </div>
+        <div class="quick-label">タップするだけで個数をセット</div>
+        <div class="quick">
+          <button type="button" onclick="setQty('q20',10)">10</button>
+          <button type="button" onclick="setQty('q20',20)">20</button>
+          <button type="button" onclick="setQty('q20',30)">30</button>
+          <button type="button" onclick="setQty('q20',50)">50</button>
+          <button type="button" onclick="setQty('q20',100)">100</button>
+        </div>
         <div class="pad">
           <button type="button" onclick="pressKey('q20','7')">7</button>
           <button type="button" onclick="pressKey('q20','8')">8</button>
@@ -93,7 +110,8 @@
 
     <div class="actions">
       <button class="reset" type="button" onclick="resetAll()">RESET</button>
-      <button class="copy" type="button" onclick="copyTotal()">合計金額をコピー</button>
+      <button class="copy plain" type="button" onclick="copyTotal(false)">コピー</button>
+      <button class="copy" type="button" onclick="copyTotal(true)">コピーしてリセット</button>
     </div>
     <div id="toast" class="toast"></div>
   </section>
@@ -105,8 +123,10 @@ function val(id){ const el=document.getElementById(id); let n=parseInt(el.value,
 function calculate(){ const q25=val('q25'),q20=val('q20'); const s25=q25*30000,s20=q20*60000; document.getElementById('s25').textContent=fmt(s25); document.getElementById('s20').textContent=fmt(s20); document.getElementById('count').textContent=q25+q20; document.getElementById('total').textContent=fmt(s25+s20); }
 function changeQty(id,d){ const el=document.getElementById(id); el.value=Math.max(0,(parseInt(el.value,10)||0)+d); calculate(); }
 function pressKey(id,k){ const el=document.getElementById(id); let v=String(parseInt(el.value,10)||0); if(k==='C')v='0'; else if(k==='B')v=v.length>1?v.slice(0,-1):'0'; else if(v.length<4)v=(v==='0'?'':v)+k; el.value=v; calculate(); }
+function setQty(id,n){ document.getElementById(id).value=n; calculate(); }
 function resetAll(){ document.getElementById('q25').value=0; document.getElementById('q20').value=0; document.getElementById('toast').textContent=''; calculate(); }
-async function copyTotal(){ const t=document.getElementById('total').textContent; try{ await navigator.clipboard.writeText(t); document.getElementById('toast').textContent='合計金額 '+t+' をコピーしました'; }catch(e){ document.getElementById('toast').textContent='コピーできませんでした'; } setTimeout(()=>document.getElementById('toast').textContent='',1800); }
+function legacyCopy(t){ const ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly',''); ta.style.cssText='position:fixed;top:0;left:0;opacity:0'; document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,t.length); let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} document.body.removeChild(ta); return ok; }
+async function copyTotal(andReset){ const t=document.getElementById('total').textContent; const toast=document.getElementById('toast'); let ok=false; if(navigator.clipboard&&window.isSecureContext){ try{ await navigator.clipboard.writeText(t); ok=true; }catch(e){} } if(!ok) ok=legacyCopy(t); if(ok){ if(andReset){ document.getElementById('q25').value=0; document.getElementById('q20').value=0; calculate(); toast.textContent='合計金額 '+t+' をコピーしてリセットしました'; }else{ toast.textContent='合計金額 '+t+' をコピーしました'; } }else{ toast.textContent='コピーできませんでした'; } setTimeout(()=>toast.textContent='',1800); }
 calculate();
 </script>
 </body>
